@@ -183,7 +183,7 @@ def poll_task(task, *args, **kwargs):
     ===============
 
     code::
-        rename_task.wait()
+        rename_task.poll()
 
     The main python process will block until the task completes on vSphere
     the datastore object will be updated automatically with the new name.
@@ -191,7 +191,7 @@ def poll_task(task, *args, **kwargs):
     use with sleep_seconds
     ======================
     code::
-        rename_task.wait(sleep_seconds=0)
+        rename_task.poll(sleep_seconds=0)
 
     The default sleep_seconds is 1, meaning the vCenter server is polled at
     most 1 time every 1 second. If you set sleep_seconds to 0, the vCenter
@@ -199,7 +199,7 @@ def poll_task(task, *args, **kwargs):
     a great deal of network traffic.
 
     code::
-        rename_task.wait(sleep_seconds=3)
+        rename_task.poll(sleep_seconds=3)
 
     The process will wait 3 seconds between polling vCenter for task status.
     The default is to wait 1 second between polling vCenter for task updates.
@@ -213,7 +213,7 @@ def poll_task(task, *args, **kwargs):
         def output(task, state, *args):
             print state
 
-        rename_task.wait(queued=output,
+        rename_task.poll(queued=output,
                          running=output,
                          success=output,
                          error=output)
@@ -230,7 +230,7 @@ def poll_task(task, *args, **kwargs):
         def output(task):
             print task.info.state
 
-        rename_task.wait(sleep_seconds=3,
+        rename_task.poll(sleep_seconds=3,
                          queued=output,
                          running=output,
                          success=output,
@@ -246,7 +246,7 @@ def poll_task(task, *args, **kwargs):
             if virtual_machine.runtime.question:
                 handle_vm_question(virtual_machine)
 
-        power_on_task.wait(virtual_machine, periodic=check_for_question)
+        power_on_task.poll(virtual_machine, periodic=check_for_question)
 
     You may have a situation where you need to periodically poll the state of
     another object which might block your task's completion. An example of
